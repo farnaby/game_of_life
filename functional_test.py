@@ -46,8 +46,7 @@ class TestGameOfLife(unittest.TestCase):
         self.player.stop()
 
     def test_board(self):
-        """ The page should show a board with 30x30 fields. The colour can be changed via mouse click. """
-        self.player.get_board()
+        """ The page should show a board with 30x30 fields. The population of a square can be toggled via mouse click. """
         squares = self.player.get_squares()
         self.assertEqual(len(squares), 30*30)
 
