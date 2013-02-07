@@ -13,21 +13,29 @@ helpers.isInteger = (number) ->
 
 onSquareClick = (event) ->
     $(event.target).toggleClass("populated")
-
+ 
 buildBoard = ($board) ->
+    net_width = $board.width()
+    net_height = $board.height()
+    border = 1
+    try
+        square_width = helpers.calculateSquareLength(net_width, border, 30)
+        square_height = helpers.calculateSquareLength(net_width, border, 30)
+    catch error
+        alert "Board dimensions don't fit. Please use a fitting width/height for the board div."
     for i in [0..29]
         for j in [0..29]
-            left = 10 * i
-            top = 10 * j
+            left = (square_width + border) * i
+            top = (square_height + border) * j
             coords = {'i': i, 'j': j}
             $square = $("<div/>", {
                 class: "square"
                 css: {
                     left: left + "px"
                     top: top + "px"
-                    width: 8 + "px"
-                    height: 8 + "px"
-                    border: "1px solid black"
+                    width: square_width + "px"
+                    height: square_height + "px"
+                    border: border + "px solid grey"
                 }
             }).appendTo($board)
             $square.click(coords, onSquareClick)
