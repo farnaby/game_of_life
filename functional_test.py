@@ -22,7 +22,9 @@ class SeleniumTestPlayer(unittest.TestCase):
 
     def get_squares(self):
         board = self.get_board()
-        return board.find_elements_by_class_name("square")
+        all_squares = board.find_elements_by_class_name("square")
+        self.assertEqual(len(all_squares), 30*30)
+        return [all_squares[(30*n):30*(n+1)] for n in range(30)]
 
     def assert_populated(self, square):
         self.assertIn("populated", square.get_attribute('class'))
@@ -37,18 +39,17 @@ class TestGameOfLife(SeleniumTestPlayer):
     def test_board(self):
         """ The page should show a board with 30x30 fields. The population of a square can be toggled via mouse click. """
         squares = self.get_squares()
-        self.assertEqual(len(squares), 30*30)
 
-        self.assert_not_populated(squares[55])
-        self.assert_not_populated(squares[121])
+        self.assert_not_populated(squares[2][13])
+        self.assert_not_populated(squares[13][6])
 
-        squares[55].click()
-        self.assert_populated(squares[55])
-        self.assert_not_populated(squares[121])
+        squares[2][13].click()
+        self.assert_populated(squares[2][13])
+        self.assert_not_populated(squares[13][6])
         
-        squares[55].click()
-        self.assert_not_populated(squares[55])
-        self.assert_not_populated(squares[121])
+        squares[2][13].click()
+        self.assert_not_populated(squares[2][13])
+        self.assert_not_populated(squares[13][6])
 
 
 if __name__ == '__main__':
