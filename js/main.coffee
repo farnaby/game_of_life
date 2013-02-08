@@ -41,6 +41,6 @@ buildBoard = ($board) ->
             $square.click(coords, onSquareClick)
 
 
-$(document).ready ->
+@init = () ->
     $board = $('#board')
     buildBoard($board)
