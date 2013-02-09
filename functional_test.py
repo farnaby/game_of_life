@@ -1,4 +1,5 @@
 import unittest
+from subprocess import call
 
 from selenium import webdriver
 
@@ -97,6 +98,7 @@ class TestGameOfLife(SeleniumTestPlayer):
 
 
 if __name__ == '__main__':
+    call(["coffee", "--compile", "js"])
     global _fox
     _fox = webdriver.Firefox(timeout=3)
     try:
