@@ -47,5 +47,9 @@ class @GamePosition
         @positionArray = next_position
         @listener?.positionChanged()
 
+    clear: =>
+        @positionArray = @getEmptyPositionArray()
+        @listener?.positionChanged()
+
     setListener: (@listener) ->
 

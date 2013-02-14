@@ -1,4 +1,5 @@
 import unittest
+import random
 from subprocess import call
 
 from selenium import webdriver
@@ -26,6 +27,9 @@ class SeleniumTestPlayer(unittest.TestCase):
 
     def click_next_generation(self):
         _fox.find_element_by_id("next_generation_button").click()
+
+    def click_clear_board(self):
+        _fox.find_element_by_id("clear_board_button").click()
 
     def assert_populated(self, square):
         self.assertIn("populated", square.get_attribute('class'))
@@ -78,10 +82,23 @@ class TestGameOfLife(SeleniumTestPlayer):
         self.assert_populated(squares[16][14])
         self.assert_not_populated(squares[16][15])
 
+    def assert_all_not_populated(self, squares):
+        for row in squares:
+            for square in row:
+                self.assert_not_populated(square)
+
+    def select_random(self, squares, number=9):
+        selected = []
+        for i in range(9):
+            selected.append(random.choice(random.choice(squares)))
+        return selected
+
+    def click_all(self, squares):
+        for square in squares:
+            square.click()
+
     def setup_horizontal_blinker(self, squares):
-        squares[15][13].click()
-        squares[15][14].click()
-        squares[15][15].click()
+        self.click_all([squares[15][13], squares[15][14], squares[15][15]])
 
     def test_blinker(self):
         """ The "blinker" structure should oscillate according to the rules. """
@@ -95,6 +112,16 @@ class TestGameOfLife(SeleniumTestPlayer):
 
         self.click_next_generation()
         self.assert_horizontal_blinker(squares)
+
+    def test_clear_button(self):
+        """ The "clear" button should clean the board. """
+        squares = self.get_squares()
+        selected = self.select_random(squares)
+
+        self.click_all(selected)
+
+        self.click_clear_board()
+        self.assert_all_not_populated(selected)
 
 
 if __name__ == '__main__':

@@ -106,6 +106,25 @@ describe "game position", ->
 
         spyOn dummyListener, "positionChanged"
         pos.advance()
-        expect(dummyListener.positionChanged).toHaveBeenCalled()        
+        expect(dummyListener.positionChanged).toHaveBeenCalled()
+
+    it "informs its listeners when cleared", ->
+        dummyListener =
+            positionChanged: ->
+        pos.setListener dummyListener
+        pos.toggle(1, 2)
+        pos.toggle(2, 2)
+        pos.toggle(2, 3)
+
+        spyOn dummyListener, "positionChanged"
+        pos.clear()
+        expect("#{pos.asArray()}").toBe "#{[
+            [0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0]
+        ]}"
+        expect(dummyListener.positionChanged).toHaveBeenCalled()
 
 
