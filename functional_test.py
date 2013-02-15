@@ -19,7 +19,7 @@ class SeleniumTestPlayer(unittest.TestCase):
     def get_board(self):
         return _fox.find_element_by_id("board")
 
-    def get_squares(self):
+    def get_square_matrix(self):
         board = self.get_board()
         all_squares = board.find_elements_by_class_name("square")
         self.assertEqual(len(all_squares), 30*30)
@@ -43,7 +43,7 @@ class TestGameOfLife(SeleniumTestPlayer):
 
     def test_board(self):
         """ The page should show a board with 30x30 fields. The population of a square can be toggled via mouse click. """
-        squares = self.get_squares()
+        squares = self.get_square_matrix()
 
         self.assert_not_populated(squares[2][13])
         self.assert_not_populated(squares[13][6])
@@ -83,40 +83,41 @@ class TestGameOfLife(SeleniumTestPlayer):
         self.assert_not_populated(squares[16][15])
 
     def assert_all_not_populated(self, squares):
-        for row in squares:
-            for square in row:
-                self.assert_not_populated(square)
+        for square in squares:
+            self.assert_not_populated(square)
 
-    def select_random(self, squares, number=9):
+    def select_random(self, square_matrix, number=9):
         selected = []
         for i in range(9):
-            selected.append(random.choice(random.choice(squares)))
+            selected.append(random.choice(random.choice(square_matrix)))
         return selected
 
     def click_all(self, squares):
         for square in squares:
             square.click()
 
-    def setup_horizontal_blinker(self, squares):
-        self.click_all([squares[15][13], squares[15][14], squares[15][15]])
+    def setup_horizontal_blinker(self, square_matrix):
+        self.click_all([square_matrix[15][13],
+                        square_matrix[15][14],
+                        square_matrix[15][15]])
 
     def test_blinker(self):
         """ The "blinker" structure should oscillate according to the rules. """
-        squares = self.get_squares()
+        square_matrix = self.get_square_matrix()
 
-        self.setup_horizontal_blinker(squares)
-        self.assert_horizontal_blinker(squares)
-
-        self.click_next_generation()
-        self.assert_vertical_blinker(squares)
+        self.setup_horizontal_blinker(square_matrix)
+        self.assert_horizontal_blinker(square_matrix)
 
         self.click_next_generation()
-        self.assert_horizontal_blinker(squares)
+        self.assert_vertical_blinker(square_matrix)
+
+        self.click_next_generation()
+        self.assert_horizontal_blinker(square_matrix)
 
     def test_clear_button(self):
         """ The "clear" button should clean the board. """
-        squares = self.get_squares()
-        selected = self.select_random(squares)
+        square_matrix = self.get_square_matrix()
+        selected = self.select_random(square_matrix)
 
         self.click_all(selected)
 
