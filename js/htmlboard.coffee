@@ -8,7 +8,7 @@ class @HtmlBoard
     onSquareClick: (event) =>
         @gamePosition.toggle(event.data.row, event.data.column)
 
-    positionChanged: ->
+    positionChanged: =>
         arr = @gamePosition.asArray()
         for i in [0..(@n_rows-1)]
             for j in [0..(@n_columns-1)]
@@ -45,4 +45,4 @@ class @HtmlBoard
                 }).appendTo(@$div)
                 @$squares[row][column] = $square
                 $square.click(coords, @onSquareClick)
-        @gamePosition.setListener(this)
+        @gamePosition.setPositionChangedCallback(@positionChanged)

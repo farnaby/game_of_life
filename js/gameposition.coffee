@@ -20,7 +20,7 @@ class @GamePosition
     toggle: (row, column) ->
         old_val = @positionArray[row][column]
         @positionArray[row][column] = (if old_val is 0 then 1 else 0)
-        @listener?.positionChanged()
+        @positionChanged?()
 
     neighbours: (row, column) ->
         count = 0
@@ -45,11 +45,10 @@ class @GamePosition
             for column in [0..@n_columns-1]
                 next_position[row][column] = @evaluateNextGeneration(row, column)
         @positionArray = next_position
-        @listener?.positionChanged()
+        @positionChanged?()
 
     clear: =>
         @positionArray = @getEmptyPositionArray()
-        @listener?.positionChanged()
+        @positionChanged?()
 
-    setListener: (@listener) ->
-
+    setPositionChangedCallback: (@positionChanged) ->

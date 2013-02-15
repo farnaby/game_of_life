@@ -87,36 +87,32 @@ describe "game position", ->
         ]}"
 
     it "informs its listeners when toggled", ->
-        dummyListener = 
-            positionChanged: ->
-        spyOn dummyListener, "positionChanged"
-        pos.setListener dummyListener
+        positionChanged = jasmine.createSpy "positionChanged"
+        pos.setPositionChangedCallback positionChanged
 
         pos.toggle(2, 2)
 
-        expect(dummyListener.positionChanged).toHaveBeenCalled()
+        expect(positionChanged).toHaveBeenCalled()
 
     it "informs its listeners when position advanced", ->
-        dummyListener =
-            positionChanged: ->
-        pos.setListener dummyListener
+        positionChanged = jasmine.createSpy "positionChanged"
+
+        pos.setPositionChangedCallback positionChanged        
         pos.toggle(1, 2)
         pos.toggle(2, 2)
         pos.toggle(2, 3)
 
-        spyOn dummyListener, "positionChanged"
         pos.advance()
-        expect(dummyListener.positionChanged).toHaveBeenCalled()
+        expect(positionChanged.calls.length).toEqual(4)
 
     it "informs its listeners when cleared", ->
-        dummyListener =
-            positionChanged: ->
-        pos.setListener dummyListener
+        positionChanged = jasmine.createSpy "positionChanged"
+        pos.setPositionChangedCallback positionChanged
+
         pos.toggle(1, 2)
         pos.toggle(2, 2)
         pos.toggle(2, 3)
 
-        spyOn dummyListener, "positionChanged"
         pos.clear()
         expect("#{pos.asArray()}").toBe "#{[
             [0, 0, 0, 0, 0]
@@ -125,6 +121,6 @@ describe "game position", ->
             [0, 0, 0, 0, 0]
             [0, 0, 0, 0, 0]
         ]}"
-        expect(dummyListener.positionChanged).toHaveBeenCalled()
+        expect(positionChanged.calls.length).toEqual(4)
 
 
