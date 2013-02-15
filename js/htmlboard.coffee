@@ -1,9 +1,20 @@
+isInteger = (number) ->
+    number % 1 == 0
+
+calculateSquareLength = (net_len, border, n_squares) ->
+    candidate = (net_len - border * (n_squares + 1)) / n_squares
+    if isInteger(candidate)
+        candidate
+    else
+        throw "uneven result"
+
+
 class @HtmlBoard
 
     constructor: (@$div, @gamePosition) ->
         @n_rows = gamePosition.n_rows
         @n_columns = gamePosition.n_columns
-        @$squares = (null for j in [1..@n_rows] for k in [1..@n_columns])
+        @$squares = (null for j in [1..@n_columns] for k in [1..@n_rows])
 
     onSquareClick: (event) =>
         @gamePosition.toggle(event.data.row, event.data.column)
@@ -24,8 +35,8 @@ class @HtmlBoard
         net_height = @$div.height()
         border = 1
         try
-            square_width = helpers.calculateSquareLength(net_width, border, @n_columns)
-            square_height = helpers.calculateSquareLength(net_width, border, @n_rows)
+            square_width = calculateSquareLength(net_width, border, @n_columns)
+            square_height = calculateSquareLength(net_height, border, @n_rows)
         catch error
             alert "Board dimensions don't fit. Please use a fitting width/height for the board div."
         for row in [0..(@n_rows-1)]
@@ -42,7 +53,13 @@ class @HtmlBoard
                         height: square_height + "px"
                         border: border + "px solid grey"
                     }
-                }).appendTo(@$div)
+                })
+                @$div.append($square)
                 @$squares[row][column] = $square
                 $square.click(coords, @onSquareClick)
         @gamePosition.setPositionChangedCallback(@positionChanged)
+
+
+@htmlboard = {
+    calculateSquareLength: calculateSquareLength
+}
