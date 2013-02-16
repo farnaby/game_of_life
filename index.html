@@ -14,9 +14,9 @@
 	<style type="text/css">
 		* {margin: 0; padding: 0}
 		body {
-			width:950px;
-			margin:0 auto;
-			margin-top:5px;
+			width: 950px;
+			margin: 0 auto;
+			margin-top: 5px;
 			color: #003;
 			background-color: #ddf;
 		}
@@ -31,29 +31,55 @@
 			width: 940px;
 		}
 		#header {
-			height:55px;
+			height: 55px;
 			line-height: 55px;
 		}
 		#navigation {
-			height:30px;
+			height: 30px;
 			line-height: 30px;
-			margin-top:10px;
+			margin-top: 10px;
 		}
-		#content { 
-			min-height:440px;			
+		#content {
+			overflow: auto;
 			padding-top: 10px;
-			margin-top:10px;
+			padding-bottom: 10px;
+			margin-top: 10px;
 		}
 		#footer { 
-			height:30px;
-			margin-top:10px;
+			height: 30px;
+			margin-top: 10px;
 			line-height: 30px;
+		}
+		
+		#board_column {
+			float: left;
+			width: 440px;
+			min-height: 430px;
+		}
+		#explanation_column {
+			float: left;
+			padding: 10px;
+			width: 470px;
+			min-height: 410px;
+			border: solid 1px;
+			border-radius: 5px;
+		}
+		#explanation_column h3 {
+			margin-bottom: 10px;
+		}
+		#explanation_column .non_top {
+			margin-top: 17px;
+		}
+		#explanation_column li {
+			list-style-position: inside;
+			padding-left: 5px;
+			padding-top: 5px;
 		}
 
 		#board {
 			position: relative;
-			width: 301px;
-			height: 301px;
+			width: 421px;
+			height: 421px;
 			border: 2px solid;
 			background-color: white;
 		}
@@ -70,6 +96,9 @@
 		#clear_board_button:hover,
 		.square:hover{
 			background-color: #f82;
+		}
+		.populated:hover {
+			background-color: #300 !important;
 		}
 		.square {
 			position: absolute;
@@ -90,10 +119,41 @@
 	</div>
 
 	<div id="content">
-		<div id="board"></div>
-		<button id="next_generation_button"> Next Generation </button>
-		<button id="clear_board_button"> Clear Board </button>
+		<div id="board_column">
+			<div id="board"></div>
+			<button id="next_generation_button"> Next Generation </button>
+			<button id="clear_board_button"> Clear Board </button>
+		</div>
+		<div id="explanation_column">
+			<h3>How to Play</h3>
+			<p>Create a pattern by selecting squares on the board.
+			Then click "Next Generation" as often as you like and watch
+			evolution play its game. Once it gets boring, feel free to
+			play god and change the natural course of life by toggling
+			squares on the board again.</p>
+
+			<h3 class="non_top">The Rules of Evolution</h3>
+			<p>Evolution is governed by four rules:</p>
+			<ol>
+				<li>Each square has eight neighbours. If one square is
+				alive and two or three of its neighbours are also alive,
+				it survives.</li>
+				<li>If less than two of its neighbours are alive, it
+				dies from loneliness.</li>
+				<li>If more than three neighbours are alive, it dies
+				due to overpopulation.</li>
+				<li>When there is an empty field with exactly three
+				living neighbours, a new child is born.</li>
+			</ol>
+
+			<h3 class="non_top">Where can I learn more about this?</h3>
+			<p>There's lot of stuff about Conway's Game of Life out 
+			there in the internet. And you might've guessed already:
+			<a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">
+			Wikipedia</a> is a great starting point.</p>
+		</div>
 	</div>
+
 	<div id="footer">
 		Created by Farnaby 2013.
 	</div>
