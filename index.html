@@ -12,32 +12,90 @@
 		$(init);
 	</script>
 	<style type="text/css">
+		* {margin: 0; padding: 0}
 		body {
-			margin:0;
-			padding:0;
-			font-family:sans;
+			width:950px;
+			margin:0 auto;
+			margin-top:5px;
+			color: #003;
+			background-color: #ddf;
 		}
+		#header,
+		#navigation,
+		#content,
+		#footer {
+			background-color: #f4f4ff;
+			border: solid 1px;
+			border-radius: 5px;
+			padding-left: 10px;
+			width: 940px;
+		}
+		#header {
+			height:55px;
+			line-height: 55px;
+		}
+		#navigation {
+			height:30px;
+			line-height: 30px;
+			margin-top:10px;
+		}
+		#content { 
+			min-height:440px;			
+			padding-top: 10px;
+			margin-top:10px;
+		}
+		#footer { 
+			height:30px;
+			margin-top:10px;
+			line-height: 30px;
+		}
+
 		#board {
 			position: relative;
 			width: 301px;
 			height: 301px;
-			margin-left: 33px;
-			margin-top: 33px;
-			border: 2px solid black;
+			border: 2px solid;
 			background-color: white;
+		}
+		#next_generation_button,
+		#clear_board_button {
+			margin-top: 5px;
+			background-color: #ddf;
+			padding: 2px;
+			border-radius: 5px;
+			border: 1px solid;
+			font-family: Times;
+		}
+		#next_generation_button:hover,
+		#clear_board_button:hover,
+		.square:hover{
+			background-color: #f82;
 		}
 		.square {
 			position: absolute;
+			border-color: #ddf;
+			border-style: solid;
 		}
 		.populated {
-			background-color: green;
+			background-color: #003;
 		}
 	</style>
 </head>
 <body>
-	<h1>Conway's Game of Life</h1>
-	<div id="board"></div>
-	<button id="next_generation_button"> Next Generation </button>
-	<button id="clear_board_button"> Clear Board </button>
+	<div id="header">
+		<h1>Spielplatz</h1>
+	</div>
+	<div id="navigation">
+		<h3>Conway's Game of Life</h3>
+	</div>
+
+	<div id="content">
+		<div id="board"></div>
+		<button id="next_generation_button"> Next Generation </button>
+		<button id="clear_board_button"> Clear Board </button>
+	</div>
+	<div id="footer">
+		Created by Farnaby 2013.
+	</div>
 </body>
 </html>

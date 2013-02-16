@@ -51,7 +51,7 @@ class @HtmlBoard
                         top: top + "px"
                         width: square_width + "px"
                         height: square_height + "px"
-                        border: border + "px solid grey"
+                        'border-width': border + "px"
                     }
                 })
                 @$div.append($square)
