@@ -20,12 +20,11 @@ class @HtmlBoard
         @gamePosition.toggle(event.data.row, event.data.column)
 
     positionChanged: =>
-        arr = @gamePosition.asArray()
         for i in [0..(@n_rows-1)]
             for j in [0..(@n_columns-1)]
                 $square = @$squares[i][j]
-                is_populated = arr[i][j]
-                if is_populated is 1
+                is_populated = @gamePosition.get(i, j)
+                if is_populated is '1'
                     $square.addClass "populated"
                 else
                     $square.removeClass "populated"
