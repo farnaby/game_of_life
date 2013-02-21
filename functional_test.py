@@ -1,14 +1,13 @@
 import unittest
 import random
-from subprocess import call
+import time
+from subprocess import call, Popen, PIPE
 
 from selenium import webdriver
 
 
 PORT = 8111
 
-
-# TODO: start & stop server automatically
 
 class SeleniumTestPlayer(unittest.TestCase):
     """ Base class for testing Conway's Game of Life webapp, hiding selenium details. """
@@ -128,8 +127,12 @@ class TestGameOfLife(SeleniumTestPlayer):
 if __name__ == '__main__':
     call(["coffee", "--compile", "js"])
     global _fox
+    server = Popen(["python", "-m", "SimpleHTTPServer", str(PORT)],
+                   cwd='/home/om3/Projekte/game_of_life',
+                   stdout=PIPE, stderr=PIPE)
     _fox = webdriver.Firefox(timeout=3)
     try:
         unittest.main(verbosity=2)
     finally:
         _fox.close()
+        server.terminate()
