@@ -35,3 +35,22 @@ describe "HtmlBoard helper function for board size calculation", ->
         n_fields = 10
         call = () -> calculateSquareLength(net_len, borders, n_fields)
         expect(call).toThrow "uneven result"
+
+
+describe "ButtonPanel", ->
+
+    it "deactivates the back button when position is at beginning", ->
+        fakeGame = {
+            isAtBeginning: -> true,
+            keepMeUpdated: (@cb) -> cb()
+        }
+        $back = $("<button/>")
+        buttonPanel = new ButtonPanel(null, null, $back, fakeGame)
+        expect($back.prop("disabled")).toBe(true)
+
+        fakeGame.isAtBeginning = -> false
+        fakeGame.cb()
+
+        expect($back.prop("disabled")).toBe(false)
+
+

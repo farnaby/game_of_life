@@ -8,6 +8,9 @@ calculateSquareLength = (net_len, border, n_squares) ->
     else
         throw "uneven result"
 
+@htmlboard = {
+    calculateSquareLength: calculateSquareLength
+}
 
 class @HtmlBoard
 
@@ -56,9 +59,13 @@ class @HtmlBoard
                 @$div.append($square)
                 @$squares[row][column] = $square
                 $square.click(coords, @onSquareClick)
-        @gamePosition.setPositionChangedCallback(@positionChanged)
+        @gamePosition.keepMeUpdated @positionChanged
 
 
-@htmlboard = {
-    calculateSquareLength: calculateSquareLength
-}
+class @ButtonPanel
+
+    constructor: (@$nextGeneration, @$clearBoard, @$back, @gamePosition) ->
+        @gamePosition.keepMeUpdated @checkButtons
+
+    checkButtons: =>
+        @$back.prop "disabled", @gamePosition.isAtBeginning()

@@ -88,8 +88,7 @@
 			border: 2px solid;
 			background-color: white;
 		}
-		#next_generation_button,
-		#clear_board_button {
+		.board_control {
 			margin-top: 5px;
 			background-color: #ddf;
 			padding: 4px;
@@ -99,8 +98,7 @@
 			font-size: 1em;
 			margin-right: 5px;
 		}
-		#next_generation_button:hover,
-		#clear_board_button:hover,
+		.board_control:hover,
 		.square:hover{
 			background-color: #f82;
 		}
@@ -128,8 +126,9 @@
 	<div id="content">
 		<div id="board_column">
 			<div id="board"></div>
-			<button id="next_generation_button"> Next Generation </button>
-			<button id="clear_board_button"> Clear Board </button>
+			<button id="next_generation_button" class="board_control"> Next Generation </button>
+			<button id="clear_board_button" class="board_control"> Clear Board </button>
+			<button id="back_button" class="board_control"> Back </button>
 		</div>
 		<div id="explanation_column">
 			<h3>How to Play</h3>
