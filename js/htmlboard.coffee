@@ -14,19 +14,19 @@ calculateSquareLength = (net_len, border, n_squares) ->
 
 class @HtmlBoard
 
-    constructor: (@$div, @gamePosition) ->
-        @n_rows = gamePosition.n_rows
-        @n_columns = gamePosition.n_columns
+    constructor: (@$div, @game) ->
+        @n_rows = game.n_rows
+        @n_columns = game.n_columns
         @$squares = (null for j in [1..@n_columns] for k in [1..@n_rows])
 
     onSquareClick: (event) =>
-        @gamePosition.toggle(event.data.row, event.data.column)
+        @game.toggle(event.data.row, event.data.column)
 
     positionChanged: =>
         for i in [0..(@n_rows-1)]
             for j in [0..(@n_columns-1)]
                 $square = @$squares[i][j]
-                is_populated = @gamePosition.get(i, j)
+                is_populated = @game.get(i, j)
                 if is_populated is '1'
                     $square.addClass "populated"
                 else
@@ -59,19 +59,19 @@ class @HtmlBoard
                 @$div.append($square)
                 @$squares[row][column] = $square
                 $square.click(coords, @onSquareClick)
-        @gamePosition.keepMeUpdated @positionChanged
+        @game.keepMeUpdated @positionChanged
 
 
 class @ButtonPanel
 
-    constructor: (@$nextGeneration, @$clearBoard, @$back, @$forward, @gamePosition) ->
-        @gamePosition.keepMeUpdated @checkButtons
+    constructor: (@$nextGeneration, @$clearBoard, @$back, @$forward, @game) ->
+        @game.keepMeUpdated @checkButtons
 
-        @$nextGeneration.click(@gamePosition.advance)
-        @$clearBoard.click(@gamePosition.clear)
-        @$back.click(@gamePosition.back)
-        @$forward.click(@gamePosition.forward)
+        @$nextGeneration.click(@game.advance)
+        @$clearBoard.click(@game.clear)
+        @$back.click(@game.back)
+        @$forward.click(@game.forward)
 
     checkButtons: =>
-        @$back.prop "disabled", @gamePosition.isAtBeginning()
-        @$forward.prop "disabled", @gamePosition.isAtLatestPosition()
+        @$back.prop "disabled", @game.isAtBeginning()
+        @$forward.prop "disabled", @game.isAtLatestPosition()

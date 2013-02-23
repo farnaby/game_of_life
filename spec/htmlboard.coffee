@@ -2,11 +2,11 @@ describe "HtmlBoard", ->
 
     it "builds a board inside a jquery div object", ->
         $div = $("<div/>")
-        position = new GamePosition(5, 4)
+        game = new Game(5, 4)
         spyOn($div, 'width').andReturn(45)
         spyOn($div, 'height').andReturn(56)
         spyOn($div, 'append')
-        board = new HtmlBoard($div, position)
+        board = new HtmlBoard($div, game)
         board.buildDOM()
         expect($div.append.calls.length).toEqual(20)
 
@@ -51,7 +51,7 @@ describe "ButtonPanel", ->
         $forward = $("<button/>")
 
     it "binds the buttons to their corresponding game functions", ->
-        spyGame = jasmine.createSpyObj "GamePosition", ["advance", "clear", "back", "forward", "keepMeUpdated"]
+        spyGame = jasmine.createSpyObj "Game", ["advance", "clear", "back", "forward", "keepMeUpdated"]
         buttonPanel = new ButtonPanel $next_generation, $clear, $back, $forward, spyGame
 
         $next_generation.click()

@@ -47,12 +47,12 @@ describe "ConwayEngine", ->
             "00000"
 
 
-describe "GamePosition", ->
+describe "Game", ->
 
     pos = undefined
 
     beforeEach ->
-        pos = new GamePosition(5, 5)
+        pos = new Game(5, 5)
 
     it "toggles fields when asked to", ->
         expect(pos.asArray()).toEqual [
@@ -93,7 +93,7 @@ describe "GamePosition", ->
     it "informs a listener when position advanced", ->
         positionChanged = jasmine.createSpy "positionChanged"
 
-        pos.keepMeUpdated positionChanged        
+        pos.keepMeUpdated positionChanged
         pos.toggle(1, 2)
         pos.toggle(2, 2)
         pos.toggle(2, 3)

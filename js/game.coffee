@@ -91,7 +91,7 @@ class @ConwayEngine
         PositionSnapshot.buildFromArray next_position
 
 
-class @GamePosition
+class @Game
 
     constructor: (@n_rows, @n_columns) ->
         @positionSnapshot = PositionSnapshot.buildEmpty(n_rows, n_columns)
