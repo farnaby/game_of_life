@@ -98,8 +98,9 @@ describe "GamePosition", ->
         pos.toggle(2, 2)
         pos.toggle(2, 3)
 
+        positionChanged.reset()
         pos.advance()
-        expect(positionChanged.calls.length).toBeGreaterThan(3)
+        expect(positionChanged).toHaveBeenCalled()
 
     it "informs a listener when cleared", ->
         positionChanged = jasmine.createSpy "positionChanged"
@@ -109,6 +110,7 @@ describe "GamePosition", ->
         pos.toggle(2, 2)
         pos.toggle(2, 3)
 
+        positionChanged.reset()
         pos.clear()
         expect(pos.asArray()).toEqual [
             ['0', '0', '0', '0', '0']
@@ -117,7 +119,7 @@ describe "GamePosition", ->
             ['0', '0', '0', '0', '0']
             ['0', '0', '0', '0', '0']
         ]
-        expect(positionChanged.calls.length).toBeGreaterThan(3)
+        expect(positionChanged).toHaveBeenCalled()
 
     it "informs a listener when going back or forward", ->
         positionChanged = jasmine.createSpy "positionChanged"
