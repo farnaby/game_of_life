@@ -67,5 +67,9 @@ class @ButtonPanel
     constructor: (@$nextGeneration, @$clearBoard, @$back, @gamePosition) ->
         @gamePosition.keepMeUpdated @checkButtons
 
+        @$nextGeneration.click(@gamePosition.advance)
+        @$clearBoard.click(@gamePosition.clear)
+        @$back.click(@gamePosition.back)
+
     checkButtons: =>
         @$back.prop "disabled", @gamePosition.isAtBeginning()

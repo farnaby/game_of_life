@@ -39,13 +39,35 @@ describe "HtmlBoard helper function for board size calculation", ->
 
 describe "ButtonPanel", ->
 
+    $next_generation = null
+    $clear = null
+    $back = null
+
+    beforeEach ->
+        $next_generation = $("<button/>")
+        $clear = $("<button/>")
+        $back = $("<button/>")
+
+    it "binds the buttons to their corresponding game functions", ->
+        spyGame = jasmine.createSpyObj "GamePosition", ["advance", "clear", "back", "keepMeUpdated"]
+        buttonPanel = new ButtonPanel $next_generation, $clear, $back, spyGame
+
+        $next_generation.click()
+        expect(spyGame.advance).toHaveBeenCalled()
+
+        $clear.click()
+        expect(spyGame.clear).toHaveBeenCalled()
+
+        $back.click()
+        expect(spyGame.back).toHaveBeenCalled()
+
     it "deactivates the back button when position is at beginning", ->
         fakeGame = {
             isAtBeginning: -> true,
             keepMeUpdated: (@cb) -> cb()
         }
-        $back = $("<button/>")
-        buttonPanel = new ButtonPanel(null, null, $back, fakeGame)
+        
+        buttonPanel = new ButtonPanel($next_generation, $clear, $back, fakeGame)
         expect($back.prop("disabled")).toBe(true)
 
         fakeGame.isAtBeginning = -> false

@@ -9,6 +9,3 @@
         $('#back_button'),
         gamePosition
     )
-    $('#next_generation_button').click(gamePosition.advance)
-    $('#clear_board_button').click(gamePosition.clear)
-    $('#back_button').click(gamePosition.back)
