@@ -7,5 +7,6 @@
         $('#next_generation_button'),
         $('#clear_board_button'),
         $('#back_button'),
+        $('#forward_button'),
         gamePosition
     )

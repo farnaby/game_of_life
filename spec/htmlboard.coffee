@@ -42,15 +42,17 @@ describe "ButtonPanel", ->
     $next_generation = null
     $clear = null
     $back = null
+    $forward = null
 
     beforeEach ->
         $next_generation = $("<button/>")
         $clear = $("<button/>")
         $back = $("<button/>")
+        $forward = $("<button/>")
 
     it "binds the buttons to their corresponding game functions", ->
-        spyGame = jasmine.createSpyObj "GamePosition", ["advance", "clear", "back", "keepMeUpdated"]
-        buttonPanel = new ButtonPanel $next_generation, $clear, $back, spyGame
+        spyGame = jasmine.createSpyObj "GamePosition", ["advance", "clear", "back", "forward", "keepMeUpdated"]
+        buttonPanel = new ButtonPanel $next_generation, $clear, $back, $forward, spyGame
 
         $next_generation.click()
         expect(spyGame.advance).toHaveBeenCalled()
@@ -61,13 +63,17 @@ describe "ButtonPanel", ->
         $back.click()
         expect(spyGame.back).toHaveBeenCalled()
 
-    it "deactivates the back button when position is at beginning", ->
+        $forward.click()
+        expect(spyGame.forward).toHaveBeenCalled()
+
+    it "disables the back button when game is at beginning", ->
         fakeGame = {
             isAtBeginning: -> true,
+            isAtLatestPosition: -> true,
             keepMeUpdated: (@cb) -> cb()
         }
         
-        buttonPanel = new ButtonPanel($next_generation, $clear, $back, fakeGame)
+        buttonPanel = new ButtonPanel $next_generation, $clear, $back, $forward, fakeGame
         expect($back.prop("disabled")).toBe(true)
 
         fakeGame.isAtBeginning = -> false
@@ -75,4 +81,17 @@ describe "ButtonPanel", ->
 
         expect($back.prop("disabled")).toBe(false)
 
+    it "disables the forward button when game is at latest known position", ->
+        fakeGame = {
+            isAtBeginning: -> true,
+            isAtLatestPosition: -> true,
+            keepMeUpdated: (@cb) -> cb()
+        }
+        
+        buttonPanel = new ButtonPanel $next_generation, $clear, $back, $forward, fakeGame
+        expect($forward.prop("disabled")).toBe(true)
 
+        fakeGame.isAtLatestPosition = -> false
+        fakeGame.cb()
+
+        expect($forward.prop("disabled")).toBe(false)

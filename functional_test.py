@@ -33,6 +33,9 @@ class SeleniumTestPlayer(unittest.TestCase):
     def click_back_button(self):
         _fox.find_element_by_id("back_button").click()
 
+    def click_forward_button(self):
+        _fox.find_element_by_id("forward_button").click()
+
     def assert_populated(self, square):
         self.assertIn("populated", square.get_attribute('class'))
 
@@ -43,6 +46,9 @@ class SeleniumTestPlayer(unittest.TestCase):
         back_button = _fox.find_element_by_id("back_button")
         self.assertTrue(back_button.get_attribute('disabled'))
 
+    def assert_forward_button_disabled(self):
+        back_button = _fox.find_element_by_id("forward_button")
+        self.assertTrue(back_button.get_attribute('disabled'))
 
 
 class TestGameOfLife(SeleniumTestPlayer):
@@ -143,7 +149,7 @@ class TestGameOfLife(SeleniumTestPlayer):
         self.click_clear_board()
         self.assert_all_not_populated(selected)
 
-    def test_back_buttons(self):
+    def test_back_button(self):
         """ The "back" button allows to go back in history. """
         self.assert_back_button_disabled()
 
@@ -164,6 +170,31 @@ class TestGameOfLife(SeleniumTestPlayer):
         self.click_back_button()
         self.assert_no_blinker(square_matrix)
 
+    def test_forward_button(self):
+        """ The "forward" button allows to redo any type of action taken back with "back". """
+        self.assert_forward_button_disabled()
+
+        square_matrix = self.get_square_matrix()
+        self.setup_horizontal_blinker(square_matrix)  # takes three steps
+        self.click_next_generation()
+        self.click_back_button()
+        self.click_back_button()
+        self.click_back_button()
+        self.click_back_button()
+
+        # We're at the beginning now ...
+        self.assert_no_blinker(square_matrix)
+
+        self.click_forward_button()
+        self.click_forward_button()
+        self.click_forward_button()
+
+        self.assert_horizontal_blinker(square_matrix)
+
+        self.click_forward_button()
+
+        self.assert_vertical_blinker(square_matrix)
+        self.assert_forward_button_disabled()
 
 
 if __name__ == '__main__':

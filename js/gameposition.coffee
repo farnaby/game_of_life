@@ -36,9 +36,11 @@ class @GameHistory
     constructor: ->
         @history = []
         @pointer = -1
+        @present = -1
 
     append: (snapshot) ->
         @pointer += 1
+        @present = @pointer
         @history[@pointer] = snapshot
 
     back: ->
@@ -47,8 +49,17 @@ class @GameHistory
         @pointer -= 1
         @history[@pointer]
 
+    forward: ->
+        if @pointer is @present
+            throw "already at present"
+        @pointer += 1
+        @history[@pointer]
+
     isAtBeginning: ->
         @pointer <= 0
+
+    isAtPresent: ->
+        @pointer is @present
 
 
 class @ConwayEngine
@@ -107,8 +118,15 @@ class @GamePosition
         @positionSnapshot = @gameHistory.back()
         @positionChanged()
 
+    forward: =>
+        @positionSnapshot = @gameHistory.forward()
+        @positionChanged()
+
     isAtBeginning: =>
         @gameHistory.isAtBeginning()
+
+    isAtLatestPosition: =>
+        @gameHistory.isAtPresent()
 
     advance: =>
         @positionSnapshot = @conwayEngine.advance @positionSnapshot

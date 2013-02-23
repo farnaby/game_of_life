@@ -64,12 +64,14 @@ class @HtmlBoard
 
 class @ButtonPanel
 
-    constructor: (@$nextGeneration, @$clearBoard, @$back, @gamePosition) ->
+    constructor: (@$nextGeneration, @$clearBoard, @$back, @$forward, @gamePosition) ->
         @gamePosition.keepMeUpdated @checkButtons
 
         @$nextGeneration.click(@gamePosition.advance)
         @$clearBoard.click(@gamePosition.clear)
         @$back.click(@gamePosition.back)
+        @$forward.click(@gamePosition.forward)
 
     checkButtons: =>
         @$back.prop "disabled", @gamePosition.isAtBeginning()
+        @$forward.prop "disabled", @gamePosition.isAtLatestPosition()

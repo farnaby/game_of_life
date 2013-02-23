@@ -119,7 +119,21 @@ describe "GamePosition", ->
         ]
         expect(positionChanged.calls.length).toBeGreaterThan(3)
 
-    it "informs more than one listener when toggled", ->
+    it "informs a listener when going back or forward", ->
+        positionChanged = jasmine.createSpy "positionChanged"
+        pos.keepMeUpdated positionChanged
+
+        pos.toggle(1, 2)
+
+        positionChanged.reset()
+        pos.back()
+        expect(positionChanged).toHaveBeenCalled()
+
+        positionChanged.reset()
+        pos.forward()
+        expect(positionChanged).toHaveBeenCalled()
+
+    it "can inform more than one listener", ->
         positionChanged = jasmine.createSpy "firstListener"
         positionChanged2 = jasmine.createSpy "secondListener"
         pos.keepMeUpdated positionChanged
@@ -195,32 +209,40 @@ describe "GameHistory", ->
 
     history = null
     snap1 = new PositionSnapshot(3, "000" + "000")
+    snap2 = new PositionSnapshot(3, "111" + "111")
+    snap2a = new PositionSnapshot(3, "001" + "111")
+    snap3 = new PositionSnapshot(3, "101" + "001")
 
     beforeEach ->
         history = new GameHistory()
         history.append snap1
 
     it "remembers some PositionSnapshots", ->
-        snap2 = new PositionSnapshot(3, "111" + "111")
         history.append snap2
-        snap3 = new PositionSnapshot(3, "101" + "001")
         history.append snap3
 
         expect(history.back()).toEqual snap2
         expect(history.back()).toEqual snap1
 
     it "continues working after taking back and making other moves again", ->
-        snap2 = new PositionSnapshot(3, "111" + "111")
         history.append snap2
 
         expect(history.back()).toEqual snap1
 
-        snap2a = new PositionSnapshot(3, "001" + "111")
         history.append snap2a
-        snap3 = new PositionSnapshot(3, "000" + "111")
         history.append snap3
 
         expect(history.back()).toEqual snap2a
+
+    it "allows to redo moves by going forward again", ->
+        history.append snap2
+        history.append snap3
+        history.back()
+        history.back()
+
+        expect(history.forward()).toEqual snap2
+        expect(history.forward()).toEqual snap3
+        expect(history.isAtPresent()).toBe true
 
     it "throws an exception when trying to go back beyond big bang", ->
         expect(-> history.back()).toThrow()
@@ -228,7 +250,6 @@ describe "GameHistory", ->
     it "can tell whether we are at its beginning", ->
         expect(history.isAtBeginning()).toBe true
 
-        snap2 = new PositionSnapshot(3, "111" + "111")
         history.append snap2
 
         expect(history.isAtBeginning()).toBe false
@@ -236,4 +257,21 @@ describe "GameHistory", ->
         history.back()
 
         expect(history.isAtBeginning()).toBe true
+
+    it "can tell whether we are at its end", ->
+        expect(history.isAtPresent()).toBe true
+
+        history.append snap2
+        history.append snap3
+
+        expect(history.isAtPresent()).toBe true
+
+        history.back()
+
+        expect(history.isAtPresent()).toBe false
+
+        history.back()
+        history.append snap2a
+
+        expect(history.isAtPresent()).toBe true
 
