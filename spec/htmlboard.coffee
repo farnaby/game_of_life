@@ -29,13 +29,6 @@ describe "HtmlBoard helper function for board size calculation", ->
         square_len = calculateSquareLength(net_len, borders, n_fields)
         expect(square_len * n_fields + borders * (n_fields + 1)).toBe net_len
 
-    it "warns you when your sizes don't work out even", ->
-        net_len = 300
-        borders = 1
-        n_fields = 10
-        call = () -> calculateSquareLength(net_len, borders, n_fields)
-        expect(call).toThrow "uneven result"
-
 
 describe "ButtonPanel", ->
 

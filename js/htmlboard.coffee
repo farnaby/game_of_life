@@ -2,11 +2,7 @@ isInteger = (number) ->
     number % 1 == 0
 
 calculateSquareLength = (net_len, border, n_squares) ->
-    candidate = (net_len - border * (n_squares + 1)) / n_squares
-    if isInteger(candidate)
-        candidate
-    else
-        throw "uneven result"
+    (net_len - border * (n_squares + 1)) / n_squares
 
 @htmlboard = {
     calculateSquareLength: calculateSquareLength
@@ -36,11 +32,12 @@ class @HtmlBoard
         net_width = @$div.width()
         net_height = @$div.height()
         border = 1
-        try
-            square_width = calculateSquareLength(net_width, border, @n_columns)
-            square_height = calculateSquareLength(net_height, border, @n_rows)
-        catch error
-            alert "Board dimensions don't fit. Please use a fitting width/height for the board div."
+        square_width = calculateSquareLength(net_width, border, @n_columns)
+        if not isInteger(square_width)
+            console.warn "The chosen board width does not fit the number of squares. I'll have to interpolate."
+        square_height = calculateSquareLength(net_height, border, @n_rows)
+        if not isInteger(square_height)
+            console.warn "The chosen board height does not fit the number of squares. I'll have to interpolate."
         for row in [0..(@n_rows-1)]
             for column in [0..(@n_columns-1)]
                 left = (square_width + border) * row
