@@ -90,6 +90,8 @@
 		}
 		.board_control {
 			margin-top: 5px;
+			float: left;
+			height: 30px;
 			background-color: #ddf;
 			padding: 4px;
 			border-radius: 5px;
@@ -104,6 +106,9 @@
 		}
 		.board_control[disabled]:hover {
 			background-color: #ddf;
+		}
+		.board_control[disabled] img {
+			opacity: 0.3;
 		}
 		.populated:hover {
 			background-color: #300 !important;
@@ -131,8 +136,12 @@
 			<div id="board"></div>
 			<button id="next_generation_button" class="board_control"> Next Generation </button>
 			<button id="clear_board_button" class="board_control"> Clear Board </button>
-			<button id="back_button" class="board_control"> Back </button>
-			<button id="forward_button" class="board_control"> Forward </button>
+			<button id="back_button" class="board_control">
+				<img src="img/arrow_left.svg" alt="Back" height="20px"/>
+			</button>
+			<button id="forward_button" class="board_control">
+				<img src="img/arrow_right.svg" alt="Forward" height="20px"/>
+			</button>
 		</div>
 		<div id="explanation_column">
 			<h3>How to Play</h3>
